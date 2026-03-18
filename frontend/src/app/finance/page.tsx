@@ -5,11 +5,11 @@ import { TrendingUp, TrendingDown } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 export default function Finance() {
-  const [txns, setTxns] = useState([]);
+  const [txns, setTxns] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchTransactions().then(res => {
-        if(Array.isArray(res)) setTxns(res);
+    fetchTransactions().then((res: any) => {
+        if(Array.isArray(res)) setTxns(res as any[]);
     }).catch(console.error);
   }, []);
 
