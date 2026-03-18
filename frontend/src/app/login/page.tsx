@@ -17,7 +17,8 @@ export default function Login() {
       params.append('username', email);
       params.append('password', password);
       
-      const res = await axios.post('http://127.0.0.1:8000/token', params);
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+      const res = await axios.post(`${API_URL}/token`, params);
       localStorage.setItem('token', res.data.access_token);
       router.push('/');
     } catch {

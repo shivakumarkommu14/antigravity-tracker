@@ -13,7 +13,8 @@ export default function Register() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('http://127.0.0.1:8000/register', { email, password });
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+      await axios.post(`${API_URL}/register`, { email, password });
       router.push('/login');
     } catch {
       setError('Registration failed. Email might exist.');
