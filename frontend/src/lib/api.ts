@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Task, Transaction, Loan } from '../types';
 
 const API_URL = 'http://127.0.0.1:8000';
 
@@ -16,7 +17,13 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const fetchTasks = () => api.get('/tasks').then(res => res.data);
-export const fetchTransactions = () => api.get('/transactions').then(res => res.data);
-export const fetchLoans = () => api.get('/loans').then(res => res.data);
-export const agentCommand = (prompt: string) => api.post('/api/agent', { prompt }).then(res => res.data);
+export interface AgentResponse {
+  status: string;
+  message: string;
+  data: any;
+}
+
+export const fetchTasks = (): Promise<Task[]> => api.get('/tasks').then(res => res.data);
+export const fetchTransactions = (): Promise<Transaction[]> => api.get('/transactions').then(res => res.data);
+export const fetchLoans = (): Promise<Loan[]> => api.get('/loans').then(res => res.data);
+export const agentCommand = (prompt: string): Promise<AgentResponse> => api.post('/api/agent', { prompt }).then(res => res.data);

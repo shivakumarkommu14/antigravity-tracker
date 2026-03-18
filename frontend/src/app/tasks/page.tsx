@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { fetchTasks, api } from '@/lib/api';
+import { fetchTasks } from '@/lib/api';
 import { Calendar, CheckCircle2, Circle } from 'lucide-react';
+import { Task } from '@/types';
 
 export default function Tasks() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const loadTasks = async () => {
     try {
@@ -16,7 +17,7 @@ export default function Tasks() {
 
   useEffect(() => { loadTasks(); }, []);
 
-  const handleToggle = async (id: string, currentStatus: string) => {
+  const handleToggle = async (_id: string, _currentStatus: string) => {
     // Basic mock toggle since the backend doesn't have a PATCH endpoint yet
     alert('Task toggle - requires backend PATCH endpoint for persistence');
   };
@@ -31,7 +32,7 @@ export default function Tasks() {
            <div className="p-8 text-center text-slate-500">No tasks yet. Use the Agent to create one!</div>
          ) : (
            <ul className="divide-y divide-slate-100">
-             {tasks.map((task: any) => (
+             {tasks.map((task: Task) => (
                 <li key={task.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                   <div className="flex items-center gap-4">
                     <button onClick={() => handleToggle(task.id, task.status)} className="text-slate-300 hover:text-blue-500 transition-colors">

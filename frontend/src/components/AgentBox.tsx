@@ -19,7 +19,7 @@ export default function AgentBox({ onAction }: { onAction: () => void }) {
       setMessage(res.message);
       setPrompt("");
       onAction(); // refresh data
-    } catch (err) {
+    } catch {
       setMessage("Error parsing command.");
     } finally {
       setLoading(false);

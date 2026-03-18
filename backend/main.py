@@ -6,6 +6,10 @@ from database import engine, Base, get_db
 import models, schemas, auth
 from typing import List
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 Base.metadata.create_all(bind=engine)
 
@@ -88,6 +92,7 @@ def smart_agent(payload: dict, db: Session = Depends(get_db), current_user: mode
     from agent import parse_natural_language
     result = parse_natural_language(prompt)
     
+    new_obj = None
     if result["action"] == "create_task":
         new_obj = models.Task(**result["data"], user_id=current_user.id)
     elif result["action"] == "create_transaction":
@@ -95,8 +100,10 @@ def smart_agent(payload: dict, db: Session = Depends(get_db), current_user: mode
     elif result["action"] == "create_loan":
         new_obj = models.Loan(**result["data"], user_id=current_user.id)
         
-    db.add(new_obj)
-    db.commit()
-    db.refresh(new_obj)
-    
-    return {"status": "success", "message": f"Agent created a {result['action'].replace('create_', '')}", "data": new_obj}
+    if new_obj:
+        db.add(new_obj)
+        db.commit()
+        db.refresh(new_obj)
+        return {"status": "success", "message": f"Agent created a {result['action'].replace('create_', '')}", "data": new_obj}
+    else:
+        return {"status": "error", "message": "Agent could not determine action"}

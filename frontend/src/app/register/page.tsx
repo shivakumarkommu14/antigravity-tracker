@@ -5,9 +5,9 @@ import axios from 'axios';
 import Link from 'next/link';
 
 export default function Register() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -15,7 +15,7 @@ export default function Register() {
     try {
       await axios.post('http://127.0.0.1:8000/register', { email, password });
       router.push('/login');
-    } catch (err) {
+    } catch {
       setError('Registration failed. Email might exist.');
     }
   };
@@ -28,11 +28,11 @@ export default function Register() {
         <form onSubmit={handleRegister} className="space-y-5">
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2">Email</label>
-            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm" />
+            <input type="email" required value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm" />
           </div>
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2">Password</label>
-            <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm" />
+            <input type="password" required value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm" />
           </div>
           <button type="submit" className="w-full bg-emerald-600 text-white font-bold rounded-xl py-4 hover:bg-emerald-700 hover:shadow-lg transition-all transform hover:-translate-y-0.5 mt-2">Create Account</button>
         </form>

@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react';
 import { fetchLoans } from '@/lib/api';
 import { ArrowLeftRight, Calendar } from 'lucide-react';
+import { Loan } from '@/types';
 
 export default function Loans() {
-  const [loans, setLoans] = useState([]);
+  const [loans, setLoans] = useState<Loan[]>([]);
 
   useEffect(() => {
     fetchLoans().then(setLoans).catch(console.error);
@@ -17,9 +18,9 @@ export default function Loans() {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {loans.length === 0 ? (
-          <div className="p-8 text-center text-slate-500 bg-white rounded-2xl shadow-sm border border-slate-100 md:col-span-2">No active loans. Try asking the Agent: 'lent $500 to Bob'</div>
+          <div className="p-8 text-center text-slate-500 bg-white rounded-2xl shadow-sm border border-slate-100 md:col-span-2">No active loans. Try asking the Agent: &apos;lent $500 to Bob&apos;</div>
         ) : (
-          loans.map((loan: any) => (
+          loans.map((loan: Loan) => (
             <div key={loan.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-4">
                 <span className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-wider ${loan.type === 'borrowed' ? 'bg-orange-100 text-orange-600' : 'bg-indigo-100 text-indigo-600'}`}>

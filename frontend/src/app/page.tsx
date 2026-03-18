@@ -4,11 +4,12 @@ import { fetchTasks, fetchTransactions, fetchLoans } from '@/lib/api';
 import AgentBox from '@/components/AgentBox';
 import { CheckCircle2, CircleDollarSign, AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { Task, Transaction, Loan } from '@/types';
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState([]);
-  const [txns, setTxns] = useState([]);
-  const [loans, setLoans] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [txns, setTxns] = useState<Transaction[]>([]);
+  const [loans, setLoans] = useState<Loan[]>([]);
 
   const loadData = async () => {
     try {
@@ -25,11 +26,11 @@ export default function Dashboard() {
 
   useEffect(() => { loadData(); }, []);
 
-  const pendingTasks = tasks.filter((t: any) => t.status !== 'done').length;
-  const doneTasks = tasks.filter((t: any) => t.status === 'done').length;
+  const pendingTasks = tasks.filter((t: Task) => t.status !== 'done').length;
+  const doneTasks = tasks.filter((t: Task) => t.status === 'done').length;
 
-  const income = txns.filter((t: any) => t.type === 'income').reduce((acc, t: any) => acc + t.amount, 0);
-  const expenses = txns.filter((t: any) => t.type === 'expense').reduce((acc, t: any) => acc + t.amount, 0);
+  const income = txns.filter((t: Transaction) => t.type === 'income').reduce((acc, t: Transaction) => acc + t.amount, 0);
+  const expenses = txns.filter((t: Transaction) => t.type === 'expense').reduce((acc, t: Transaction) => acc + t.amount, 0);
   const netWorth = income - expenses;
 
   // Chart prep

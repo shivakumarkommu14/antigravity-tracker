@@ -3,21 +3,22 @@ import { useEffect, useState } from 'react';
 import { fetchTransactions } from '@/lib/api';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { Transaction } from '@/types';
 
 export default function Finance() {
-  const [txns, setTxns] = useState<any[]>([]);
+  const [txns, setTxns] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    fetchTransactions().then((res: any) => {
-        if(Array.isArray(res)) setTxns(res as any[]);
+    fetchTransactions().then((res: Transaction[]) => {
+        if(Array.isArray(res)) setTxns(res);
     }).catch(console.error);
   }, []);
 
-  const expenses = txns.filter((t: any) => t.type === 'expense');
+  const expenses = txns.filter((t: Transaction) => t.type === 'expense');
   
   // Group expenses by category
   const categoryMap: Record<string, number> = {};
-  expenses.forEach((t: any) => {
+  expenses.forEach((t: Transaction) => {
     const cat = t.category || 'General';
     categoryMap[cat] = (categoryMap[cat] || 0) + t.amount;
   });
@@ -65,7 +66,7 @@ export default function Finance() {
                  </tr>
                </thead>
                <tbody className="divide-y divide-slate-100">
-                 {txns.map((txn: any) => (
+                 {txns.map((txn: Transaction) => (
                    <tr key={txn.id} className="hover:bg-slate-50/50 transition-colors">
                      <td className="p-5">
                        {txn.type === 'income' 
